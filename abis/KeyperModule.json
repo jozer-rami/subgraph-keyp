@@ -1,0 +1,357 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "masterCopyAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "proxyFactoryAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "AdminNotRegistered", "type": "error" },
+  { "inputs": [], "name": "GroupNotRegistered", "type": "error" },
+  { "inputs": [], "name": "NotAuthorized", "type": "error" },
+  { "inputs": [], "name": "NotAuthorizedExecOnBehalf", "type": "error" },
+  { "inputs": [], "name": "OrgNotRegistered", "type": "error" },
+  { "inputs": [], "name": "ParentNotRegistered", "type": "error" },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "org",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "group",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "admin",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "parent",
+        "type": "address"
+      }
+    ],
+    "name": "GroupCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "org",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      }
+    ],
+    "name": "OrganisationCreated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "org",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "executor",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "target",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "result",
+        "type": "bool"
+      }
+    ],
+    "name": "TxOnBehalfExecuted",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "NAME",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "VERSION",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "parent", "type": "address" },
+      { "internalType": "string", "name": "name", "type": "string" }
+    ],
+    "name": "addGroup",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "dataHash", "type": "bytes32" },
+      { "internalType": "bytes", "name": "data", "type": "bytes" },
+      { "internalType": "bytes", "name": "signatures", "type": "bytes" }
+    ],
+    "name": "checkNSignatures",
+    "outputs": [],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "domainSeparator",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "safe", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" },
+      { "internalType": "bytes", "name": "data", "type": "bytes" },
+      {
+        "internalType": "enum Enum.Operation",
+        "name": "operation",
+        "type": "uint8"
+      },
+      { "internalType": "uint256", "name": "_nonce", "type": "uint256" }
+    ],
+    "name": "encodeTransactionData",
+    "outputs": [{ "internalType": "bytes", "name": "", "type": "bytes" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "safe", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" },
+      { "internalType": "bytes", "name": "data", "type": "bytes" },
+      {
+        "internalType": "enum Enum.Operation",
+        "name": "operation",
+        "type": "uint8"
+      },
+      { "internalType": "bytes", "name": "signatures", "type": "bytes" }
+    ],
+    "name": "execTransactionOnBehalf",
+    "outputs": [{ "internalType": "bool", "name": "success", "type": "bool" }],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getChainId",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "group", "type": "address" }
+    ],
+    "name": "getGroupInfo",
+    "outputs": [
+      { "internalType": "string", "name": "", "type": "string" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_org", "type": "address" }
+    ],
+    "name": "getOrg",
+    "outputs": [
+      { "internalType": "string", "name": "", "type": "string" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "safe", "type": "address" },
+      { "internalType": "address", "name": "to", "type": "address" },
+      { "internalType": "uint256", "name": "value", "type": "uint256" },
+      { "internalType": "bytes", "name": "data", "type": "bytes" },
+      {
+        "internalType": "enum Enum.Operation",
+        "name": "operation",
+        "type": "uint8"
+      },
+      { "internalType": "uint256", "name": "_nonce", "type": "uint256" }
+    ],
+    "name": "getTransactionHash",
+    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "", "type": "address" },
+      { "internalType": "address", "name": "", "type": "address" }
+    ],
+    "name": "groups",
+    "outputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "address", "name": "admin", "type": "address" },
+      { "internalType": "address", "name": "safe", "type": "address" },
+      { "internalType": "address", "name": "parent", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "group", "type": "address" }
+    ],
+    "name": "isAdmin",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "parent", "type": "address" },
+      { "internalType": "address", "name": "child", "type": "address" }
+    ],
+    "name": "isChild",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "org", "type": "address" }],
+    "name": "isOrgRegistered",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "org", "type": "address" },
+      { "internalType": "address", "name": "parent", "type": "address" },
+      { "internalType": "address", "name": "child", "type": "address" }
+    ],
+    "name": "isParent",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "masterCopy",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nonce",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "name": "orgs",
+    "outputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      { "internalType": "address", "name": "admin", "type": "address" },
+      { "internalType": "address", "name": "safe", "type": "address" },
+      { "internalType": "address", "name": "parent", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract GnosisSafeProxy",
+        "name": "proxy",
+        "type": "address"
+      },
+      { "internalType": "address", "name": "singleton", "type": "address" },
+      { "internalType": "bytes", "name": "initializer", "type": "bytes" },
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "proxyCreated",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "proxyFactory",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "string", "name": "name", "type": "string" }],
+    "name": "registerOrg",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

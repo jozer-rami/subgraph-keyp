@@ -1,0 +1,14 @@
+type Organization @entity {
+  id: ID! #address safe
+  name: String
+  child: [Group!]! @derivedFrom(field: "org")
+}
+
+type Group @entity {
+  id: ID!
+  name: String
+  admin: String
+  org: Organization!
+  child: [Group!]! @derivedFrom(field: "parent")
+  parent: Group!
+}

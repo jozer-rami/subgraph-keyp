@@ -1,0 +1,29 @@
+specVersion: 0.0.4
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: KeyperModule
+    network: rinkeby
+    source:
+      address: "0x948821D8eEFFc73D6bCC800cD27bB5CA58cA6aF4"
+      abi: KeyperModule
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - GroupCreated
+        - OrganisationCreated
+        - TxOnBehalfExecuted
+      abis:
+        - name: KeyperModule
+          file: ./abis/KeyperModule.json
+      eventHandlers:
+        - event: GroupCreated(indexed address,indexed address,string,indexed address,address)
+          handler: handleGroupCreated
+        - event: OrganisationCreated(indexed address,string)
+          handler: handleOrganisationCreated
+        - event: TxOnBehalfExecuted(indexed address,indexed address,indexed address,bool)
+          handler: handleTxOnBehalfExecuted
+      file: ./src/mapping.ts
