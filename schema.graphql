@@ -7,7 +7,7 @@ type Organization @entity {
 type Group @entity {
   id: ID!
   name: String
-  admin: String
+  admin: Bytes
   org: Organization!
   child: [Group!]! @derivedFrom(field: "parent")
   parent: Group!
