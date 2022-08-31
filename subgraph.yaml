@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum
     name: KeyperModule
-    network: kovan
+    network: goerli
     source:
-      address: "0x30b27e7c188a389A1492259E4D2BAB6b35377E90"
+      address: "0x4dB20f69647DE2aE8980BC705Cf54a054aa0Fda6"
       abi: KeyperModule
-      startBlock: 33564419
+      startBlock: 7504341
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
