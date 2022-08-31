@@ -10,10 +10,10 @@ dataSources:
     source:
       address: "0x30b27e7c188a389A1492259E4D2BAB6b35377E90"
       abi: KeyperModule
-      startblock: 33564127
+      startBlock: 33564419
     mapping:
       kind: ethereum/events
-      apiVersion: 0.0.5
+      apiVersion: 0.0.6
       language: wasm/assemblyscript
       entities:
         - Group
