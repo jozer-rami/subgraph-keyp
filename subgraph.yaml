@@ -1,21 +1,23 @@
 specVersion: 0.0.4
+description: Keyp-subgraph
+repository: https://github.com/jozer-rami/subgraph-keyp
 schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum
     name: KeyperModule
-    network: rinkeby
+    network: kovan
     source:
-      address: "0x948821D8eEFFc73D6bCC800cD27bB5CA58cA6aF4"
+      address: "0x30b27e7c188a389A1492259E4D2BAB6b35377E90"
       abi: KeyperModule
+      startblock: 33564127
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - GroupCreated
-        - OrganisationCreated
-        - TxOnBehalfExecuted
+        - Group
+        - Organization
       abis:
         - name: KeyperModule
           file: ./abis/KeyperModule.json
