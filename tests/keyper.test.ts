@@ -1,18 +1,15 @@
-import { Address, ethereum, Value } from "@graphprotocol/graph-ts";
-import { describe, test, beforeAll, assert, clearStore, log } from "matchstick-as/assembly/index"
-import { Organization } from "../generated/schema";
+import { ethereum, Value } from "@graphprotocol/graph-ts";
+import { describe, test, assert, clearStore, afterEach } from "matchstick-as/assembly/index"
+import { Group, Organization } from "../generated/schema";
 import { handleGroupCreated, handleOrganisationCreated } from "../src/mapping";
-import { organisationCreatedEvent, groupCreatedEvent, handleNewOrganisations } from "./helpers";
+import { organisationCreatedEvent, groupCreatedEvent, handleNewOrganisations, getGroupID, handleNewGroups } from "./helpers";
 
-// beforeAll(() => {
-//     // TODO create 
-//     let org = new Organization("0x01")
-//     org.name = "Main Org Test Root"
-//     org.save()
-// })
+// Coverage
+export { handleOrganisationCreated, handleGroupCreated}
 
 const org1 : string = '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7'
 const group1 : string = '0x44609982b2e83ca5c348bba453bfa8363e8a2c22'
+const childGroup : string = '0x662E48dA233FF7781a87bf4c36fCefa3467f9934'
 
 describe("handleOrganisationCreated()", () => {
     test("Should create a new organisation entity", () => {
@@ -33,18 +30,23 @@ describe("handleOrganisationCreated()", () => {
   })
 
 describe("handleGroupCreated()", () => {
+    afterEach(() => {
+      clearStore()
+    })
+
     test("Should create a new group entity", () => {
       let customOrg = new Organization(org1);
       customOrg.set("name", Value.fromString("testORg1"));
       customOrg.save();
 
-      log.info('Org created {}', [customOrg.id])
       let mockGroupCreatedEvent1 = groupCreatedEvent(org1, group1, 'group1', org1, org1)
-      handleGroupCreated(mockGroupCreatedEvent1)
+      handleNewGroups([mockGroupCreatedEvent1])
 
-      const id = org1 + '-' + group1
-      assert.fieldEquals('Group', id, 'name', 'group1')
-      clearStore()
+      let groupId = getGroupID(org1, group1)
+      assert.fieldEquals('Group', groupId, 'name', 'group1')
+      assert.fieldEquals('Group', groupId, 'admin', org1)
+      assert.fieldEquals('Group', groupId, 'parent', org1)
+      assert.fieldEquals('Group', groupId, 'org', org1)
   })
 
     test("Should create child reference in organization", () => {
@@ -52,11 +54,24 @@ describe("handleGroupCreated()", () => {
       handleNewOrganisations([mockOrgCreatedEvent])
 
       let mockGroupCreatedEvent1 = groupCreatedEvent(org1, group1, 'group1', org1, org1)
-      handleGroupCreated(mockGroupCreatedEvent1)
+      handleNewGroups([mockGroupCreatedEvent1])
 
       // Retrieve org from store
       let org = Organization.load(org1) as Organization
       assert.equals(ethereum.Value.fromI32(1), ethereum.Value.fromI32(org.child.length))
-      clearStore()
+    })
+
+    test("Should create child reference in group", () => {
+      let mockOrgCreatedEvent = organisationCreatedEvent(org1, 'test Org 1')
+      handleNewOrganisations([mockOrgCreatedEvent])
+
+      let mockGroupCreatedEvent1 = groupCreatedEvent(org1, group1, 'group1', org1, org1)
+      let mockChildGroupCreatedEvent1 = groupCreatedEvent(org1, childGroup, 'child group1', org1, group1)
+
+      handleNewGroups([mockGroupCreatedEvent1, mockChildGroupCreatedEvent1])
+      // Retrieve group1 from store
+      let group1Id = getGroupID(org1, group1)
+      let group = Group.load(group1Id) as Group
+      assert.equals(ethereum.Value.fromI32(1), ethereum.Value.fromI32(group.child.length))
     })
 })

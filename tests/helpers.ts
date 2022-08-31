@@ -28,9 +28,13 @@ export function handleNewOrganisations(events: OrganisationCreated[]): void {
   });
 }
 
-function AddressParam(label: string, address: string): ethereum.EventParam {
+function getAddressParam(label: string, address: string): ethereum.EventParam {
   let param = new ethereum.EventParam(label, ethereum.Value.fromAddress(Address.fromString(address)));
   return param;
+}
+
+export function getGroupID(org:string, group: string) : string {
+  return org + "-" + group
 }
 
 export function organisationCreatedEvent(
@@ -66,26 +70,20 @@ export function groupCreatedEvent(
   let newGroupCreatedEvent = changetype<GroupCreated>(newMockEvent())
   newGroupCreatedEvent.parameters = new Array();
 
-  // let id = org + "-" + group;
-  // let idParam = new ethereum.EventParam("id", ethereum.Value.fromString(id));
-  // log.info('idParam {}', [idParam.value.toString()])
-
-  let orgParam = AddressParam("org", org)
-  let groupParam = AddressParam("group", group)
+  let orgParam = getAddressParam("org", org)
+  let groupParam = getAddressParam("group", group)
   let nameParam = new ethereum.EventParam(
     "name",
     ethereum.Value.fromString(name)
   );
-  let adminParam = AddressParam("admin", admin)
-  let parentParam = AddressParam("parent", parent)
+  let adminParam = getAddressParam("admin", admin)
+  let parentParam = getAddressParam("parent", parent)
 
   newGroupCreatedEvent.parameters.push(orgParam);
   newGroupCreatedEvent.parameters.push(groupParam);
   newGroupCreatedEvent.parameters.push(nameParam);
   newGroupCreatedEvent.parameters.push(adminParam);
   newGroupCreatedEvent.parameters.push(parentParam);
-
-  log.info('newGroupCreatedEvent', [])
 
   return newGroupCreatedEvent;
 }

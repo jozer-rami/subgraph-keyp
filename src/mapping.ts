@@ -8,30 +8,25 @@ import {
 import { Group, Organization } from "../generated/schema";
 
 export function handleGroupCreated(event: GroupCreated): void {
-  log.info("handleGroupCreated", []);
   let orgId = event.params.org.toHexString();
   let groupId = orgId + "-" + event.params.group.toHexString();
   let group = Group.load(groupId);
 
   if (group == null) {
     group = new Group(groupId);
-    log.info("New group {}", [groupId]);
     group.name = event.params.name;
     group.org = orgId;
     group.admin = event.params.admin;
-    let parentId = orgId + "-" + event.params.parent.toString();
+    let parentId : string
+    if (event.params.org.toHexString() == event.params.parent.toHexString()) {
+      parentId = orgId
+    } else {
+      // Parent is a group : need to reference groupID
+      parentId = orgId + "-" + event.params.parent.toHexString();
+    }
     group.parent = parentId;
     group.save();
   }
-
-    // Update child on org or parent
-    // // If group under org
-    // let org = Organization.load(orgId);
-    // if (org == null) return; // Should not happen, type check
-    // org.child = new Array<string>();
-    // org.child.push(group.id);
-    // log.info("Child reference updated {}", [org.child.length.toString()]);
-    // org.save();
 }
 
 export function handleOrganisationCreated(event: OrganisationCreated): void {
